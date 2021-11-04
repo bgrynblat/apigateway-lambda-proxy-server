@@ -4,7 +4,13 @@ const bodyParser = require('body-parser')
 
 const app = express()
 const port = process.env.PORT || 3030
-const lambdaProxy = process.env.LAMBDA_PROXY || 'http://localhost:9000/2015-03-31/functions/function/invocations'
+
+const lambdaProtocol = process.env.LAMBDA_PROTOCOL || 'http'
+const lambdaPort = process.env.LAMBDA_PORT || '9000'
+const lambdaHost = process.env.LAMBDA_HOST || 'localhost'
+const lambdaEndpoint = process.env.LAMBDA_ENDPOINT || "/2015-03-31/functions/function/invocations"
+
+const lambdaProxy = process.env.LAMBDA_PROXY || `${lambdaProtocol}://${lambdaHost}${lambdaPort.length ? `:${lambdaPort}` : ""}${lambdaEndpoint}`
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
